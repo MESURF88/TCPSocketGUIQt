@@ -11,7 +11,7 @@
 #include <QLabel>
 #include <QSlider>
 
-#include "UDPClient.h"
+#include "TCPClient.h"
 #include "guitest.h"
 
 QCoreApplication* createApplication(int &argc, char *argv[])
@@ -40,29 +40,28 @@ int main(int argc, char *argv[ ])
 		QLabel *hello = new QLabel;
 		hello->setText("<center>Hello World!</center>");
 		QPushButton *quitButton = new QPushButton("Quit");
-    quitButton->setAutoDefault(false);
+        quitButton->setAutoDefault(false);
 		layout1->addWidget(hello);
 		layout1->addWidget(quitButton);
 
 		window->setWindowTitle("UDP Socket GUI");
 		window->resize(800, 800);
 		window->setLayout(layout1);
-
 		window->show();
 
-    const QString IP =     "127.0.0.1";
-    const ushort port = 8000;
-    EchoClient *client = new EchoClient(IP, port );
-    client->startThread();
+		const QString IP =     "127.0.0.1";
+		const ushort port = 8000;
+		EchoClient *client = new EchoClient(IP, port );
+		client->startThread();
 
     } else {
 		// start non-GUI version...
 		printf("Terminal GUI\n");
 
-    const QString IP =     "127.0.0.1";
-    const ushort port = 8000;
-    EchoClient *client = new EchoClient(IP, port );
-    client->startThread();
+		const QString IP =     "127.0.0.1";
+		const ushort port = 8000;
+		EchoClient *client = new EchoClient(IP, port );
+		client->startThread();
 
     }
 

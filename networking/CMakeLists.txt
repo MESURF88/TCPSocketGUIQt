@@ -9,8 +9,8 @@ set(include
 
 # source files
 set(source
- ${CMAKE_CURRENT_SOURCE_DIR}/src/UDPClient_Support.cpp
- ${CMAKE_CURRENT_SOURCE_DIR}/src/UDPClient.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/src/TCPClient_Support.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/src/TCPClient.cpp
 )
 
 add_library (networking ${source})
