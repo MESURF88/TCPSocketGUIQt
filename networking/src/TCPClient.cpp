@@ -29,7 +29,7 @@ void EchoClient::run()
     if (hostAddr != QHostAddress::Null) {
       addr = hostAddr.toString();
     }
-    printf("Client connected");
+    printf("\nClient connected");
     if (addr.length() > 0) {
       printf(" on address %s:%04d", addr.toUtf8().constData(), socket.localPort() );
     }

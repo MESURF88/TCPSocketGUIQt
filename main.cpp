@@ -5,11 +5,6 @@
 #endif
 #include <QCoreApplication>
 #include <QApplication>
-#include <QWidget>
-#include <QPushButton>
-#include <QGridLayout>
-#include <QLabel>
-#include <QSlider>
 
 #include "TCPClient.h"
 #include "guitest.h"
@@ -32,23 +27,10 @@ int main(int argc, char *argv[ ])
 		// start GUI version...
 		printf("GUI\n");
 
-		// Move to guiThread class
 		GuiThread* gui = new GuiThread;
 		gui->startThread();
-		QWidget *window = new QWidget();
-		QGridLayout *layout1 = new QGridLayout();
-		QLabel *hello = new QLabel;
-		hello->setText("<center>Hello World!</center>");
-		QPushButton *quitButton = new QPushButton("Quit");
-        quitButton->setAutoDefault(false);
-		layout1->addWidget(hello);
-		layout1->addWidget(quitButton);
-
-		window->setWindowTitle("UDP Socket GUI");
-		window->resize(800, 800);
-		window->setLayout(layout1);
-		window->show();
-
+		
+		// Move to guiThread class
 		const QString IP =     "127.0.0.1";
 		const ushort port = 8000;
 		EchoClient *client = new EchoClient(IP, port );

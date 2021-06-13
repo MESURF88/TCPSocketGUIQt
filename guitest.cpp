@@ -1,3 +1,11 @@
+#include <QWidget>
+#include <QGridLayout>
+#include <QPushButton>
+#include <QLCDNumber>
+#include <QLabel>
+
+#include "handle_manager.h"
+#include "epoch_timer.h"
 #include "guitest.h"
 
 GuiThread::~GuiThread( )
@@ -33,7 +41,7 @@ bool GuiThread::isDone()
 
 void GuiThread::run()
 {
-	printf("gui started");
+	printf("\ngui started");
     while (state == GuiState::ACTIVE) {
 
 		Sleep( 50 );
@@ -47,6 +55,25 @@ void GuiThread::startThread()
 {
   state = GuiState::ACTIVE;
   setRunThread( true );
+  QWidget *window = new QWidget();
+  QGridLayout *layout1 = new QGridLayout();
+  QLabel *hello = new QLabel;
+  hello->setText("<center>Hello World!</center>");
+  QLCDNumber *timerDisplay = new QLCDNumber;
+  QPushButton *quitButton = new QPushButton("Quit");
+  quitButton->setAutoDefault(false);
+  layout1->addWidget(hello);
+  layout1->addWidget(timerDisplay);
+  layout1->addWidget(quitButton);
+
+  window->setWindowTitle("UDP Socket GUI");
+  window->resize(800, 800);
+  window->setLayout(layout1);
+  window->show();
+  
+  //start timer thread
+  TimerThread *epochTmr = new TimerThread();
+  epochTmr->startThread();
   start();
 }
 

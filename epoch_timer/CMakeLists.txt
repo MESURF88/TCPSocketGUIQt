@@ -1,4 +1,4 @@
-# Create a library called "networking"
+# Create a library called "epoch_timer"
 # which includes the source files and include files
 # The extension is already found. Any number of sources could be listed here.
 
@@ -12,10 +12,10 @@ file(GLOB_RECURSE source
  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
 )
 
-add_library (networking ${source})
+add_library (epoch_timer ${source})
 
-target_include_directories (networking PUBLIC ${include})
+target_include_directories (epoch_timer PUBLIC ${include})
 
-target_link_libraries(networking PUBLIC Qt5::Network)
+target_link_libraries(epoch_timer PUBLIC Qt5::Core)
 
-message("-- Networking subdir files SUCCESSFULLY linked")
+message("-- Epoch Timer subdir files SUCCESSFULLY linked")
