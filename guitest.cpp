@@ -1,83 +1,57 @@
 #include <QWidget>
 #include <QGridLayout>
 #include <QPushButton>
-#include <QLCDNumber>
-#include <QLabel>
 
 #include "handle_manager.h"
-#include "epoch_timer.h"
 #include "guitest.h"
 
-GuiThread::~GuiThread( )
+#ifdef _WIN32
+  #include "windows.h"
+#else
+  // macro to allow sleep to work on Linux
+  #include <unistd.h>
+  #define Sleep(x) usleep((x)*1000)
+#endif
+
+GuiClass::GuiClass(QWidget *parent) :
+    QDialog(parent)
 {
-	stopThread();
-	setRunThread(false);
-}
-
-
-void GuiThread::setRunThread(bool newVal )
-{
-  QMutexLocker lock( &mMutex );
-  mRunThread = newVal;
-}
-
-bool GuiThread::getRunThread()
-{
-  QMutexLocker lock( &mMutex );
-  return mRunThread;
-}
-
-void GuiThread::setDone(const bool newVal)
-{
-  QMutexLocker lock( &mMutex );
-  mDone = newVal;
-}
-
-bool GuiThread::isDone()
-{
-  QMutexLocker lock( &mMutex );
-  return mDone;
-}
-
-void GuiThread::run()
-{
-	printf("\ngui started");
-    while (state == GuiState::ACTIVE) {
-
-		Sleep( 50 );
-    } // while
-
-  setDone( true );
-}
-
-
-void GuiThread::startThread()
-{
-  state = GuiState::ACTIVE;
-  setRunThread( true );
-  QWidget *window = new QWidget();
+  printf("\ngui started");
+  epochToDisplay = 0u;
+  
   QGridLayout *layout1 = new QGridLayout();
-  QLabel *hello = new QLabel;
-  hello->setText("<center>Hello World!</center>");
-  QLCDNumber *timerDisplay = new QLCDNumber;
+  centerLabel = new QLabel;
+  centerLabel->setText("<center>UNIX Epoch Time!</center>");
+  
+  timerDisplay = new QLCDNumber;
   QPushButton *quitButton = new QPushButton("Quit");
   quitButton->setAutoDefault(false);
-  layout1->addWidget(hello);
+  layout1->addWidget(centerLabel);
   layout1->addWidget(timerDisplay);
   layout1->addWidget(quitButton);
 
-  window->setWindowTitle("UDP Socket GUI");
-  window->resize(800, 800);
-  window->setLayout(layout1);
-  window->show();
+  this->resize(800, 800);
+  this->setLayout(layout1);
   
   //start timer thread
-  TimerThread *epochTmr = new TimerThread();
-  epochTmr->startThread();
-  start();
+  epochTmr = new TimerThread(this);
+  epochTmr->start();
+  
+  
+  // connect signal/slot for the epoch time updates
+  connect(epochTmr, SIGNAL(updateEpochTime(int)),
+		  this, SLOT(onEpochTimeChanged(int)));
 }
 
-void GuiThread::stopThread()
+GuiClass::~GuiClass( )
 {
-  state = GuiState::INACTIVE;
+
+}
+
+void GuiClass::onEpochTimeChanged()
+{
+	/*TODO: TCPRecvUsed.acquire();        
+	epochToDisplay = sharedEpochTime;
+	TCPRecvFree.release();*/
+    timerDisplay->display(QString::number(epochToDisplay));
 }

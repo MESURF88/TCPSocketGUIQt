@@ -26,9 +26,10 @@ int main(int argc, char *argv[ ])
     if (qobject_cast<QApplication *>(app)) {
 		// start GUI version...
 		printf("GUI\n");
-
-		GuiThread* gui = new GuiThread;
-		gui->startThread();
+		
+		GuiClass gui;
+		gui.setWindowTitle("Semaphore: Consumer & Producer");
+        gui.show();
 		
 		// Move to guiThread class
 		const QString IP =     "127.0.0.1";

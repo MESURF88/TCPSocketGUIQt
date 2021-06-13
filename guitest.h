@@ -1,34 +1,25 @@
-#ifdef _WIN32
-  #include "windows.h"
-#else
-  // macro to allow sleep to work on Linux
-  #include <unistd.h>
-  #define Sleep(x) usleep((x)*1000)
-#endif
+#include <QDialog>
 #include <QMutex>
+#include <QLabel>
+#include <QLCDNumber>
 #include <QThread>
 
-class GuiThread : public QThread
-{
-public:
-  ~GuiThread();
-  void startThread();
-  void stopThread();
-  bool isDone();
+#include "epoch_timer.h"
 
-  enum GuiState {
-    ACTIVE,
-	INACTIVE
-  };
+class GuiClass : public QDialog
+{
+	Q_OBJECT
+public:
+  explicit GuiClass(QWidget *parent = 0);
+  ~GuiClass();
+
+public slots:
+    void onEpochTimeChanged();
 protected:
-  QMutex mMutex;
-  void setRunThread( bool newVal );
-  bool getRunThread();
-  void run();
-  void setDone( const bool newVal );
 
 private:
-  int state;
-  bool mRunThread;
-  bool mDone;
+  TimerThread *epochTmr;
+  QLabel *centerLabel;
+  QLCDNumber *timerDisplay;
+  quint64 epochToDisplay;
 };

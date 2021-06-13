@@ -5,3 +5,5 @@
 
 extern QSemaphore TCPRecvUsed;
 extern QSemaphore TCPRecvFree;
+
+extern quint64 sharedEpochTime;

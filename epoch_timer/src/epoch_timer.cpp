@@ -1,56 +1,41 @@
+#include <QDateTime>
+//TODO: remove QDebug
+#include <QDebug>
+
+//TODO: #include "handle_manager.h"
 #include "epoch_timer.h"
 
-TimerThread::~TimerThread( )
-{
-	stopThread();
-	setRunThread(false);
-}
+#ifdef _WIN32
+  #include "windows.h"
+#else
+  // macro to allow sleep to work on Linux
+  #include <unistd.h>
+  #define Sleep(x) usleep((x)*1000)
+#endif
 
-
-void TimerThread::setRunThread(bool newVal )
+TimerThread::TimerThread(QObject *parent) :
+    QThread(parent)
 {
-  QMutexLocker lock( &mMutex );
-  mRunThread = newVal;
-}
-
-bool TimerThread::getRunThread()
-{
-  QMutexLocker lock( &mMutex );
-  return mRunThread;
-}
-
-void TimerThread::setDone(const bool newVal)
-{
-  QMutexLocker lock( &mMutex );
-  mDone = newVal;
-}
-
-bool TimerThread::isDone()
-{
-  QMutexLocker lock( &mMutex );
-  return mDone;
+	state == TimerState::ACTIVE;
 }
 
 void TimerThread::run()
 {
 	printf("\nepoch timer started");
     while (state == TimerState::ACTIVE) {
-
-
+		Sleep( 1000 );
+		epochTimer++;
+        /*TODO: TCPRecvFree.acquire();        
+        sharedEpochTime = epochTimer;
+        TCPRecvUsed.release();*/
+        emit updateEpochTime();
+	    qDebug() << epochTimer;
     } // while
 
-  setDone( true );
 }
 
-
-void TimerThread::startThread()
-{
-  state = TimerState::ACTIVE;
-
-  start();
-}
-
+// TODO: fix with to protected
 void TimerThread::stopThread()
 {
-  state = TimerState::INACTIVE;
+	state = TimerState::INACTIVE;
 }
