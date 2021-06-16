@@ -1,13 +1,11 @@
 #include <QMutex>
-#include <QThread>
 
-class TimerThread : public QThread
+class EpochTimer : public QObject
 {
 	Q_OBJECT
+	
 public:
-    explicit TimerThread(QObject *parent = 0);
-    void run();
-	void stopThread();
+    explicit EpochTimer();
 	
   enum TimerState {
     ACTIVE,

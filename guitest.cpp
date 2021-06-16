@@ -30,17 +30,9 @@ GuiClass::GuiClass(QWidget *parent) :
   layout1->addWidget(timerDisplay);
   layout1->addWidget(quitButton);
 
-  this->resize(800, 800);
-  this->setLayout(layout1);
+  resize(800, 800);
+  setLayout(layout1);
   
-  //start timer thread
-  epochTmr = new TimerThread(this);
-  epochTmr->start();
-  
-  
-  // connect signal/slot for the epoch time updates
-  connect(epochTmr, SIGNAL(updateEpochTime(int)),
-		  this, SLOT(onEpochTimeChanged(int)));
 }
 
 GuiClass::~GuiClass( )

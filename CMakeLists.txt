@@ -25,27 +25,24 @@ endif()
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5 COMPONENTS Network REQUIRED)
+find_package(Qt5 COMPONENTS Concurrent REQUIRED)
 
-add_subdirectory(handle_manager)
-add_subdirectory(epoch_timer)
-add_subdirectory(networking)
 
 # source files
 set(source
- guitest.cpp
+ mythread.cpp
+ myserver.cpp
  main.cpp
 )
 
-add_executable(${ProjName} ${source} guitest.h)
-
-# include libraries
-target_link_libraries(${ProjName} LINK_PUBLIC handle_manager)
-target_link_libraries(${ProjName} LINK_PUBLIC epoch_timer)
-target_link_libraries(${ProjName} LINK_PUBLIC networking)
+add_executable(${ProjName} ${source})
 
 # Qt5 libraries
-target_link_libraries(${ProjName} PUBLIC Qt5::Widgets)
-target_link_libraries(${ProjName} PUBLIC Qt5::Network)
+target_link_libraries(${ProjName} PUBLIC 
+	Qt5::Widgets
+	Qt5::Network
+	Qt5::Concurrent
+)
 
 set_target_properties( ${ProjName}
     PROPERTIES

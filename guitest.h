@@ -10,7 +10,7 @@ class GuiClass : public QDialog
 {
 	Q_OBJECT
 public:
-  explicit GuiClass(QWidget *parent = 0);
+  explicit GuiClass(QWidget *parent = nullptr);
   ~GuiClass();
 
 public slots:
@@ -18,7 +18,6 @@ public slots:
 protected:
 
 private:
-  TimerThread *epochTmr;
   QLabel *centerLabel;
   QLCDNumber *timerDisplay;
   quint64 epochToDisplay;
